@@ -21,7 +21,7 @@ reserved = {
 
 tokens = list(reserved.values()) + [
     #number and boolean
-    'FNUMBER', 'NUMBER',
+    'FNUMBER', 'NUMBER', 'STRING',
     # arithmetic
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'ASSIGN',
     # compare
@@ -80,13 +80,18 @@ def t_IDENT(t):
     return t
 
 def t_FNUMBER(t):
-    r'[0-9]+[\.][0-9]+'
+    r'\d+[\.]\d+'
     t.value = float(t.value)
     return t 
 
 def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)
+    return t
+
+def t_STRING(t):
+    r'\"[^"]*\"'
+    t.value = str(t.value)
     return t
 
 lexer = lex.lex()
