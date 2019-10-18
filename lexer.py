@@ -68,8 +68,7 @@ t_SEMICOLON = r'\;'
 t_ignore  = ' \t'
 
 t_VARID = r'\$[a-zA-Z_][a-zA-Z_0-9]*'
-
-
+t_SLIT = r'[\n\r]+'
 
 def t_error(t):
     print("Illegal characters!")
@@ -90,11 +89,9 @@ def t_FNUMBER(t):
     t.value = float(t.value)
     return t 
 
-t_SLIT = r'[\n\r]+'
-
 lexer = lex.lex()
 
-with open('test1.ek', 'r') as content_file:
+with open('test/test1.ek', 'r') as content_file:
     content = content_file.read()
     lexer.input(content)
 
