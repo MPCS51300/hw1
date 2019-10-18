@@ -6,61 +6,61 @@ tokens = lexer.tokens
 # Parser
 #######
 
-def p_prog(p):
-    '''
-    prog : externs funcs
-    '''
+# def p_prog(p):
+#     '''
+#     prog : pexterns funcs
+#     '''
 
-def p_extern(p):
-    '''
-    externs : 
-            | extern
-            | extern externs
-    '''
+# def p_externs(p):
+#     '''
+#     pexterns : 
+#              | pextern
+#              | pextern pexterns
+#     '''
 
-def p_funcs(p):
-    '''
-    funcs : func
-          | func funcs
-    '''
+# def p_funcs(p):
+#     '''
+#     funcs : func
+#           | func funcs
+#     '''
 
-def p_extern(p):
-    '''
-    extern : key_extern type globid LPARENTHESES tdecls RPARENTHESES SEMICOLON
-           | key_extern type globid LPARENTHESES RPARENTHESES SEMICOLON
-    '''
+# def p_extern(p):
+#     '''
+#     pextern : extern type globid LPARENTHESES tdecls RPARENTHESES SEMICOLON
+#             | extern type globid LPARENTHESES RPARENTHESES SEMICOLON
+#     '''
 
-def p_func(p):
-    '''
-    func : def type globid LPARENTHESES vdecls RPARENTHESES blk
-         | def type globid LPARENTHESES RPARENTHESES blk
-    '''
+# def p_func(p):
+#     '''
+#     func : def type globid LPARENTHESES vdecls RPARENTHESES blk
+#          | def type globid LPARENTHESES RPARENTHESES blk
+#     '''
 
-def p_blk(p):
-    '''
-    blk : LBRACE stmts RBRACE
-        | LBRACE RBRACE
-    '''
+# def p_blk(p):
+#     '''
+#     blk : LBRACE stmts RBRACE
+#         | LBRACE RBRACE
+# #     '''
 
-def p_stmts(p):
-    '''
-    stmts : stmt
-          | stmt stmts
-    '''
+# def p_stmts(p):
+#     '''
+#     stmts : stmt
+#           | stmt stmts
+#     '''
 
-def p_stmt(p):
-    '''
-    stmt : blk
-         | return SEMICOLON
-         | return exp SEMICOLON
-         | vdecl ASSIGN exp SEMICOLON
-         | exp SEMICOLON
-         | while LPARENTHESES exp RPARENTHESES stmt
-         | if LPARENTHESES exp RPARENTHESES stmt else stmt
-         | if LPARENTHESES exp RPARENTHESES stmt
-         | print exp SEMICOLON
-         | print slit SEMICOLON
-    '''
+# def p_stmt(p):
+#     '''
+#     stmt : blk
+#          | return SEMICOLON
+#          | return exp SEMICOLON
+#          | vdecl ASSIGN exp SEMICOLON
+#          | exp SEMICOLON
+#          | while LPARENTHESES exp RPARENTHESES stmt
+#          | if LPARENTHESES exp RPARENTHESES stmt else stmt
+#          | if LPARENTHESES exp RPARENTHESES stmt
+#          | print exp SEMICOLON
+#          | print slit SEMICOLON
+#     '''
 
 def p_exps(p):
     '''

@@ -14,7 +14,7 @@ reserved = {
     'else' : 'else',
     'print' : 'print',
     'def' : 'def',
-    "extern" : 'key_extern'
+    "extern" : 'extern'
  }
 
 tokens = list(reserved.values()) + [
