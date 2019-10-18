@@ -65,12 +65,13 @@ t_RBRACKET = r'\]'
 t_COMMA = r'\,'
 t_SEMICOLON = r'\;'
 
-t_IGNORE  = ' \t'
+t_ignore  = ' \t'
 
-t_SLIT = r'[^"\n\r]*'
 t_VARID = r'\$[a-zA-Z_][a-zA-Z_0-9]*'
 
-def t_ERROR(t):
+
+
+def t_error(t):
     print("Illegal characters!")
     t.lexer.skip(1)
 
@@ -89,4 +90,16 @@ def t_FNUMBER(t):
     t.value = float(t.value)
     return t 
 
+t_SLIT = r'[\n\r]+'
+
 lexer = lex.lex()
+
+with open('test1.ek', 'r') as content_file:
+    content = content_file.read()
+    lexer.input(content)
+
+    while True:
+        tok = lexer.token()
+        if not tok:
+            break
+        print(tok)
