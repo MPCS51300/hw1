@@ -37,7 +37,8 @@ tokens = list(reserved.values()) + [
     # ident
     'IDENT',
     # varid
-    'VARID'
+    'VARID',
+    'NEWLINE'
 ]
 
 # arithmetic
@@ -68,7 +69,10 @@ t_SEMICOLON = r'\;'
 t_ignore  = ' \t'
 
 t_VARID = r'\$[a-zA-Z_][a-zA-Z_0-9]*'
-t_SLIT = r'[\n\r]+'
+# t_SLIT = r'[\n\r]+'
+# t_SLIT = r'"^["\n\r]*"'
+t_SLIT = r'"[^"\n\r]*"'
+t_NEWLINE = r'[\n\r]+'
 
 def t_error(t):
     print("Illegal characters!")
