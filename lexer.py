@@ -21,7 +21,7 @@ reserved = {
 
 tokens = list(reserved.values()) + [
     #number and boolean
-    'FNUMBER', 'NUMBER', 
+    'FNUMBER', 'NUMBER',
     # arithmetic
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'ASSIGN',
     # compare
