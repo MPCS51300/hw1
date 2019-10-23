@@ -6,61 +6,61 @@ tokens = lexer.tokens
 # Parser
 #######
 
-# def p_prog(p):
-#     '''
-#     prog : pexterns funcs
-#     '''
+def p_prog(p):
+    '''
+    prog : pexterns funcs
+    '''
 
-# def p_externs(p):
-#     '''
-#     pexterns : 
-#              | pextern
-#              | pextern pexterns
-#     '''
+def p_externs(p):
+    '''
+    pexterns : 
+             | pextern
+             | pextern pexterns
+    '''
 
-# def p_funcs(p):
-#     '''
-#     funcs : func
-#           | func funcs
-#     '''
+def p_funcs(p):
+    '''
+    funcs : func
+          | func funcs
+    '''
 
-# def p_extern(p):
-#     '''
-#     pextern : extern type globid LPARENTHESES tdecls RPARENTHESES SEMICOLON
-#             | extern type globid LPARENTHESES RPARENTHESES SEMICOLON
-#     '''
+def p_extern(p):
+    '''
+    pextern : EXTERN type globid LPARENTHESES tdecls RPARENTHESES SEMICOLON
+            | EXTERN type globid LPARENTHESES RPARENTHESES SEMICOLON
+    '''
 
-# def p_func(p):
-#     '''
-#     func : def type globid LPARENTHESES vdecls RPARENTHESES blk
-#          | def type globid LPARENTHESES RPARENTHESES blk
-#     '''
+def p_func(p):
+    '''
+    func : DEF type globid LPARENTHESES vdecls RPARENTHESES blk
+         | DEF type globid LPARENTHESES RPARENTHESES blk
+    '''
 
-# def p_blk(p):
-#     '''
-#     blk : LBRACE stmts RBRACE
-#         | LBRACE RBRACE
-# #     '''
+def p_blk(p):
+    '''
+    blk : LBRACE stmts RBRACE
+        | LBRACE RBRACE
+     '''
 
-# def p_stmts(p):
-#     '''
-#     stmts : stmt
-#           | stmt stmts
-#     '''
+def p_stmts(p):
+    '''
+    stmts : stmt
+          | stmt stmts
+    '''
 
-# def p_stmt(p):
-#     '''
-#     stmt : blk
-#          | return SEMICOLON
-#          | return exp SEMICOLON
-#          | vdecl ASSIGN exp SEMICOLON
-#          | exp SEMICOLON
-#          | while LPARENTHESES exp RPARENTHESES stmt
-#          | if LPARENTHESES exp RPARENTHESES stmt else stmt
-#          | if LPARENTHESES exp RPARENTHESES stmt
-#          | print exp SEMICOLON
-#          | print slit SEMICOLON
-#     '''
+def p_stmt(p):
+    '''
+    stmt : blk
+         | RETURN SEMICOLON
+         | RETURN exp SEMICOLON
+         | vdecl ASSIGN exp SEMICOLON
+         | exp SEMICOLON
+         | WHILE LPARENTHESES exp RPARENTHESES stmt
+         | IF LPARENTHESES exp RPARENTHESES stmt ELSE stmt
+         | IF LPARENTHESES exp RPARENTHESES stmt
+         | PRINT exp SEMICOLON
+         | PRINT SLIT SEMICOLON
+    '''
 
 def p_exps(p):
     '''
@@ -68,13 +68,13 @@ def p_exps(p):
          | exp COMMA exps
     '''
 
-
 def p_exp(p):
     '''
     exp : LPARENTHESES exp RPARENTHESES
         | binop
         | uop
-        | varid
+        | lit
+        | VARID
         | globid LPARENTHESES exps RPARENTHESES
         | globid LPARENTHESES RPARENTHESES
     '''
@@ -84,7 +84,7 @@ def p_binop(p):
     '''
     binop : arith-ops
           | logic-ops
-          | varid ASSIGN exp
+          | VARID ASSIGN exp
           | LBRACKET type RBRACKET exp
     '''
 
@@ -111,31 +111,49 @@ def p_uop(p):
         | MINUS exp
     '''
 
+def p_lit(p):
+    '''
+    lit : true
+        | false
+        | FNUMBER
+        | NUMBER
+    '''
+
+def p_true(p):
+    '''
+    true : TRUE
+    '''
+
+def p_false(p):
+    '''
+    false : FALSE
+    '''
+
 def p_globid(p):
     '''
-    globid : ident
+    globid : IDENT
     '''
     # p[0] = p[1]
 
 def p_type(p):
     '''
-    type : int
-         | cint
-         | float
-         | bool
-         | void
+    type : INT
+         | CINT
+         | FLOAT
+         | BOOL
+         | VOID
     '''
     # p[0] = p[1]
 
 def p_refType(p):
     '''
-    type : ref type
+    type : REF type
     '''
     # p[0] = 'ref ' + p[2]
 
 def p_noAliasRefType(p):
     '''
-    type : noalias ref type
+    type : NOALIAS REF type
     '''
     # p[0] = 'noalias ref ' + p[3]
 
@@ -161,15 +179,20 @@ def p_tdecls(p):
 
 def p_vdecl(p):
     '''
-    vdecl : type varid
+    vdecl : type VARID
     '''
     # p[0] = p[1]
 
 parser = yacc.yacc()
-while True:
-    try:
-        s = input('')
-    except EOFError:
-        break
-    # parser.parse(s)
-    parser.parse(s, debug=True)
+# while True:
+#     try:
+#         s = input('')
+#     except EOFError:
+#         break
+#     # parser.parse(s)
+#     parser.parse(s, debug=True)
+
+with open('test/test1.ek', 'r') as content_file:
+    content = content_file.read()
+    content = content.replace('\n','')
+    parser.parse(content, debug=True)
