@@ -9,6 +9,14 @@ tokens = lexer.tokens
 # Parser
 #######
 
+precedence = (
+     ('nonassoc', 'SMALLERTHAN', 'GREATERTHAN', 'EQUAL', 'ASSIGN', 'AND', 'OR'),  # Nonassociative operators
+     ('left', 'PLUS', 'MINUS'),
+     ('left', 'TIMES', 'DIVIDE'),
+     ('right', 'MINUS'),            # Unary minus operator
+     ('right', 'NEGATE'),            # Unary minus operator
+ )
+
 def p_prog(p):
     '''
     prog : externs funcs
