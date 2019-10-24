@@ -10,10 +10,12 @@ tokens = lexer.tokens
 #######
 
 precedence = (
-     ('nonassoc', 'SMALLERTHAN', 'GREATERTHAN', 'EQUAL', 'ASSIGN', 'AND', 'OR'),  # Nonassociative operators
+     ('left', 'OR'),  # Nonassociative operators
+     ('left', 'AND'),  # Nonassociative operators
+     ('nonassoc', 'SMALLERTHAN', 'GREATERTHAN', 'EQUAL', 'ASSIGN'),  # Nonassociative operators
      ('left', 'PLUS', 'MINUS'),
      ('left', 'TIMES', 'DIVIDE'),
-     ('right', 'MINUS'),            # Unary minus operator
+     #('right', 'MINUS'),            # Unary minus operator
      ('right', 'NEGATE'),            # Unary minus operator
  )
 
@@ -187,10 +189,7 @@ def p_exp2(p):
     '''
     exp : lit
     '''
-    p[0] = {
-        "name": "lit",
-        "value": p[1]
-    }
+    p[0] = p[1]
 
 def p_binop(p):
     '''
@@ -229,7 +228,7 @@ def p_arithOps(p):
     elif p[2] == '*':
         op = "mul"
     elif p[2] == '/':
-        op = "sub"
+        op = "div"
     p[0] = {
         "name": "binop",
         "op": op,
@@ -282,14 +281,30 @@ def p_uop(p):
             "exp": p[2]
         }
 
-def p_lit(p):
+def p_lit0(p):
     '''
     lit : true
         | false
-        | FNUMBER
-        | NUMBER
     '''
     p[0] = p[1]
+
+def p_lit1(p):
+    '''
+    lit : FNUMBER
+    '''
+    p[0] = {
+        "name": "flit",
+        "value": p[1]
+    }
+
+def p_lit2(p):
+    '''
+    lit : NUMBER
+    '''
+    p[0] = {
+        "name": "lit",
+        "value": p[1]
+    }
 
 def p_true(p):
     '''
@@ -365,7 +380,7 @@ def p_vdecl(p):
 
 parser = yacc.yacc()
 
-with open('test/test2.ek', 'r') as content_file:
+with open('test/test1.ek', 'r') as content_file:
     content = content_file.read()
     result = parser.parse(content, debug=True)
     print(yaml.dump(result))

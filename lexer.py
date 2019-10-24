@@ -100,6 +100,7 @@ def t_NUMBER(t):
 
 def t_comments(t):
     r'\#[^\r\n]*'
+    pass
 
 lexer = lex.lex()
 
