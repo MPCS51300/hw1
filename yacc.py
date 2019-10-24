@@ -8,14 +8,14 @@ tokens = lexer.tokens
 
 def p_prog(p):
     '''
-    prog : pexterns funcs
+    prog : externs funcs
     '''
 
 def p_externs(p):
     '''
-    pexterns : 
-             | pextern
-             | pextern pexterns
+    externs : 
+             | extern
+             | extern externs
     '''
 
 def p_funcs(p):
@@ -26,8 +26,8 @@ def p_funcs(p):
 
 def p_extern(p):
     '''
-    pextern : EXTERN type globid LPARENTHESE tdecls RPARENTHESE SEMICOLON
-            | EXTERN type globid LPARENTHESE RPARENTHESE SEMICOLON
+    extern : EXTERN type globid LPARENTHESE tdecls RPARENTHESE SEMICOLON
+           | EXTERN type globid LPARENTHESE RPARENTHESE SEMICOLON
     '''
 
 def p_func(p):
@@ -186,5 +186,4 @@ parser = yacc.yacc()
 
 with open('test/test1.ek', 'r') as content_file:
     content = content_file.read()
-    content = content.replace('\n','')
     parser.parse(content, debug=True)
