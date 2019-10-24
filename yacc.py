@@ -23,11 +23,10 @@ def p_externs(p):
             | extern externs
     '''
     p[0] = {"name" : "externs"}
-    p[0]["externs"] = list()
-    if len(p) != 1:
-        p[0]["externs"].append(p[1])
-        if len(p) == 3:
-            p[0]["externs"].append(p[2])
+    if len(p) >=2 :
+        p[0]["externs"] = [p[1]]
+    if len(p) == 3:
+        p[0]["externs"].append(p[2])
 
 
 def p_funcs(p):
@@ -36,8 +35,7 @@ def p_funcs(p):
           | func funcs
     '''
     p[0] = {"name" : "funcs"}
-    p[0]["funcs"] = list()
-    p[0]["funcs"].append(p[1])
+    p[0]["funcs"] =[p[1]]
     if len(p) == 3:
         p[0]["funcs"].append(p[2])
 
