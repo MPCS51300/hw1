@@ -185,7 +185,7 @@ def p_exp2(p):
     '''
     p[0] = {
         "name": "lit",
-        "var": p[1]
+        "value": p[1]
     }
 
 def p_binop(p):

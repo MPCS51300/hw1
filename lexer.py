@@ -68,7 +68,12 @@ t_SEMICOLON = r'\;'
 t_ignore  = ' \t'
 
 t_VARID = r'\$[a-zA-Z_][a-zA-Z_0-9]*'
-t_SLIT = r'"[^"\n\r]*"'
+#t_SLIT = r'"[^"\n\r]*"'
+
+def t_SLIT(t):
+    r'"[^"\n\r]*"'
+    t.value = str(t.value)[1:-1]
+    return t
 
 def t_newline(t):
     r'[\n\r]+'
