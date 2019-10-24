@@ -26,14 +26,14 @@ def p_funcs(p):
 
 def p_extern(p):
     '''
-    pextern : EXTERN type globid LPARENTHESES tdecls RPARENTHESES SEMICOLON
-            | EXTERN type globid LPARENTHESES RPARENTHESES SEMICOLON
+    pextern : EXTERN type globid LPARENTHESE tdecls RPARENTHESE SEMICOLON
+            | EXTERN type globid LPARENTHESE RPARENTHESE SEMICOLON
     '''
 
 def p_func(p):
     '''
-    func : DEF type globid LPARENTHESES vdecls RPARENTHESES blk
-         | DEF type globid LPARENTHESES RPARENTHESES blk
+    func : DEF type globid LPARENTHESE vdecls RPARENTHESE blk
+         | DEF type globid LPARENTHESE RPARENTHESE blk
     '''
 
 def p_blk(p):
@@ -55,9 +55,9 @@ def p_stmt(p):
          | RETURN exp SEMICOLON
          | vdecl ASSIGN exp SEMICOLON
          | exp SEMICOLON
-         | WHILE LPARENTHESES exp RPARENTHESES stmt
-         | IF LPARENTHESES exp RPARENTHESES stmt ELSE stmt
-         | IF LPARENTHESES exp RPARENTHESES stmt
+         | WHILE LPARENTHESE exp RPARENTHESE stmt
+         | IF LPARENTHESE exp RPARENTHESE stmt ELSE stmt
+         | IF LPARENTHESE exp RPARENTHESE stmt
          | PRINT exp SEMICOLON
          | PRINT SLIT SEMICOLON
     '''
@@ -70,15 +70,14 @@ def p_exps(p):
 
 def p_exp(p):
     '''
-    exp : LPARENTHESES exp RPARENTHESES
+    exp : LPARENTHESE exp RPARENTHESE
         | binop
         | uop
         | lit
         | VARID
-        | globid LPARENTHESES exps RPARENTHESES
-        | globid LPARENTHESES RPARENTHESES
+        | globid LPARENTHESE exps RPARENTHESE
+        | globid LPARENTHESE RPARENTHESE
     '''
-    #todo:  exp有个branch是lit,但是我不知道lit怎么定义
 
 def p_binop(p):
     '''
@@ -184,13 +183,6 @@ def p_vdecl(p):
     # p[0] = p[1]
 
 parser = yacc.yacc()
-# while True:
-#     try:
-#         s = input('')
-#     except EOFError:
-#         break
-#     # parser.parse(s)
-#     parser.parse(s, debug=True)
 
 with open('test/test1.ek', 'r') as content_file:
     content = content_file.read()
