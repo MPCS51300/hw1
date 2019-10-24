@@ -149,16 +149,12 @@ def p_exps(p):
     exps : exp
          | exp COMMA exps
     ''' 
-    if len(p) == 2:
-        p[0] = {
-            "name": "exps",
-            "exps": [p[1]]
-        }
-    else:
-        p[0] = {
-            "name": "exps",
-            "exps": p[3]["exps"].insert(0, p[1])
-        }
+    p[0] = {"name" : "exps"}
+    if len(p) >= 2:
+        p[0]["exps"] = [p[1]]    
+    if len(p) == 4:
+        if "exps" in p[3]:
+            p[0]["exps"].extend(p[3]["exps"])
 
 def p_exp0(p):
     '''
@@ -338,34 +334,24 @@ def p_vdecls(p):
     vdecls : vdecl COMMA vdecls
            | vdecl
     '''
-    if len(p) == 2:
-        p[0] = {
-            "name": "vdecls",
-            "vars": [p[1]]
-        }
-    else :
-        p[0] = {
-            "name": "vdecls",
-            "vars": {
-                p[3]["vars"].insert(0, p[1])
-            }
-        }
+    p[0] = {"name" : "vdecls"}
+    if len(p) >= 2:
+        p[0]["vars"] = [p[1]]    
+    if len(p) == 4:
+        if "vars" in p[3]:
+            p[0]["vars"].extend(p[3]["vars"])
 
 def p_tdecls(p):
     '''
     tdecls : type
            | type COMMA tdecls
     '''
-    if len(p) == 2: 
-        p[0] = {
-            "name": "tdecls",
-            "types": [p[1]]
-        }
-    else:
-        p[0] = {
-            "name": "tdecls",
-            "types": p[1].append(p[3])
-        }
+    p[0] = {"name" : "tdecls"}
+    if len(p) >= 2:
+        p[0]["types"] = [p[1]]    
+    if len(p) == 4:
+        if "types" in p[3]:
+            p[0]["types"].extend(p[3]["types"])
 
 def p_vdecl(p):
     '''
@@ -379,7 +365,7 @@ def p_vdecl(p):
 
 parser = yacc.yacc()
 
-with open('test/test1.ek', 'r') as content_file:
+with open('test/test2.ek', 'r') as content_file:
     content = content_file.read()
     result = parser.parse(content, debug=True)
     print(yaml.dump(result))
