@@ -65,14 +65,14 @@ t_RBRACKET = r'\]'
 t_COMMA = r'\,'
 t_SEMICOLON = r'\;'
 
-t_ignore  = ' \t\n'
+t_ignore  = ' \t'
 
 t_VARID = r'\$[a-zA-Z_][a-zA-Z_0-9]*'
 t_SLIT = r'"[^"\n\r]*"'
 
 def t_newline(t):
     r'[\n\r]+'
-    t.lexer.lineno += len(t.value)
+    t.lexer.lineno += 1
 
 def t_error(t):
     print("Illegal characters!")
