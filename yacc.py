@@ -104,7 +104,7 @@ def p_stmt0(p):
     '''
     p[0] = {}
     if len(p) == 2:
-        p[0]["blk"] = p[1]
+        p[0] = p[1]
     elif p[1] == "return":
         p[0]["name"] = "ret"
         if len(p) == 4:
