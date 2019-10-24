@@ -4,6 +4,7 @@ import yaml
 
 tokens = lexer.tokens 
 
+
 #######
 # Parser
 #######
@@ -23,11 +24,11 @@ def p_externs(p):
             | extern externs
     '''
     p[0] = {"name" : "externs"}
-    if len(p) >=2 :
+    if len(p) >= 2:
         p[0]["externs"] = [p[1]]
     if len(p) == 3:
-        p[0]["externs"].append(p[2])
-
+        if "externs" in p[2]:
+            p[0]["externs"].extend(p[2]["externs"])
 
 def p_funcs(p):
     '''
@@ -37,7 +38,8 @@ def p_funcs(p):
     p[0] = {"name" : "funcs"}
     p[0]["funcs"] =[p[1]]
     if len(p) == 3:
-        p[0]["funcs"].append(p[2])
+        if "funcs" in p[2]:
+            p[0]["funcs"].extend(p[2]["funcs"])
 
 def p_extern(p):
     '''
@@ -83,10 +85,10 @@ def p_stmts(p):
           | stmt stmts
     '''
     p[0] = {"name" : "stmts"}
-    p[0]["stmts"] = list()
-    p[0]["stmts"].append(p[1])
+    p[0]["stmts"] = [p[1]]
     if len(p) == 3:
-        p[0]["stmts"].append(p[2])
+        if "stmts" in p[2]:
+            p[0]["stmts"].extend(p[2]["stmts"])
 
 def p_stmt0(p):
     '''
