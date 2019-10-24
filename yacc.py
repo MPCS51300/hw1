@@ -217,6 +217,7 @@ def p_arithOps(p):
     elif p[2] == '/':
         op = "sub"
     p[0] = {
+        "name": "binop",
         "op": op,
         "lhs": p[1],
         "rhs": p[3]
@@ -242,6 +243,7 @@ def p_logicOps(p):
     elif p[2] == "||":
         op = "or"
     p[0] = {
+        "name": "binop",
         "op": op,
         "lhs": p[1],
         "rhs": p[3]
@@ -321,7 +323,7 @@ def p_vdecls(p):
     if len(p) == 2:
         p[0] = {
             "name": "vdecls",
-            "vars": list(p[1])
+            "vars": [p[1]]
         }
     else :
         p[0] = {
