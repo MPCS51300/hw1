@@ -103,7 +103,7 @@ def p_stmt0(p):
     p[0] = {}
     if len(p) == 2:
         p[0]["blk"] = p[1]
-    elif p[2] == "return":
+    elif p[1] == "return":
         p[0]["name"] = "ret"
         if len(p) == 4:
             p[0]["exp"] = p[2]
@@ -155,7 +155,6 @@ def p_exp0(p):
     exp : LPARENTHESE exp RPARENTHESE
         | binop
         | uop
-        | lit
         | globid LPARENTHESE exps RPARENTHESE
     '''
     if len(p) == 2:
@@ -175,6 +174,15 @@ def p_exp1(p):
     '''
     p[0] = {
         "name": "varval",
+        "var": p[1]
+    }
+
+def p_exp2(p):
+    '''
+    exp : lit
+    '''
+    p[0] = {
+        "name": "lit",
         "var": p[1]
     }
 
