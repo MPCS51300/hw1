@@ -10,7 +10,7 @@ tokens = lexer.tokens
 #######
 
 precedence = (
-     ('nonassoc', 'SMALLERTHAN', 'GREATERTHAN', 'EQUAL', 'ASSIGN', 'AND', 'OR'),  # Nonassociative operators
+     ('nonassoc', 'SMALLERTHAN', 'GREATERTHAN', 'EQUAL', 'ASSIGN'),  # Nonassociative operators
      ('left', 'PLUS', 'MINUS'),
      ('left', 'TIMES', 'DIVIDE'),
      ('right', 'MINUS'),            # Unary minus operator
