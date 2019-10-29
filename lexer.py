@@ -20,7 +20,7 @@ reserved = {
  }
 
 tokens = list(reserved.values()) + [
-    #number and boolean
+    #number
     'FNUMBER', 'NUMBER',
     # arithmetic
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'ASSIGN',
@@ -68,7 +68,6 @@ t_SEMICOLON = r'\;'
 t_ignore  = ' \t'
 
 t_VARID = r'\$[a-zA-Z_][a-zA-Z_0-9]*'
-#t_SLIT = r'"[^"\n\r]*"'
 
 def t_SLIT(t):
     r'"[^"\n\r]*"'
@@ -104,12 +103,12 @@ def t_comments(t):
 
 lexer = lex.lex()
 
-with open('test/test2.ek', 'r') as content_file:
-    content = content_file.read()
-    lexer.input(content)
+# with open('test/test2.ek', 'r') as content_file:
+#     content = content_file.read()
+#     lexer.input(content)
 
-    while True:
-        tok = lexer.token()
-        if not tok:
-            break
-        print(tok)
+#     while True:
+#         tok = lexer.token()
+#         if not tok:
+#             break
+#         print(tok)

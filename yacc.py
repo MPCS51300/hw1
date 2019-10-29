@@ -10,8 +10,8 @@ tokens = lexer.tokens
 #######
 
 precedence = (
-     ('left', 'OR'),  # Nonassociative operators
-     ('left', 'AND'),  # Nonassociative operators
+     ('left', 'OR'),  
+     ('left', 'AND'),  
      ('nonassoc', 'SMALLERTHAN', 'GREATERTHAN', 'EQUAL', 'ASSIGN'),  # Nonassociative operators
      ('left', 'PLUS', 'MINUS'),
      ('left', 'TIMES', 'DIVIDE'),
@@ -378,9 +378,14 @@ def p_vdecl(p):
         "var": p[2]
     }
 
-parser = yacc.yacc()
+# parser = yacc.yacc()
 
-with open('test/test1.ek', 'r') as content_file:
-    content = content_file.read()
-    result = parser.parse(content, debug=True)
-    print(yaml.dump(result))
+# with open('test/test1.ek', 'r') as content_file:
+#     content = content_file.read()
+#     result = parser.parse(content, debug=True)
+#     print(yaml.dump(result))
+
+def parse(input_content):
+    parser = yacc.yacc()
+    result = parser.parse(input_content)
+    return yaml.dump(result)
