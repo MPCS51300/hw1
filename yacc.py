@@ -1,13 +1,26 @@
 import ply.yacc as yacc
 import lexer
 import yaml
-
+import json, sys
 tokens = lexer.tokens 
 
 
 #######
 # Parser
 #######
+
+class Func():
+    def __init__(self, name, declared_lineno, return_type):
+        self.name = name
+        self.declared_lineno = declared_lineno
+        self.return_type = return_type
+    def to_json(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, 
+            indent=4)
+
+funcs_declare = {} #(k, v)=(func_name, Func)
+variables = {}
 
 precedence = (
      ('left', 'OR'),  
@@ -294,7 +307,8 @@ def p_lit1(p):
     '''
     p[0] = {
         "name": "flit",
-        "value": p[1]
+        "value": p[1],
+        "exptype": "float"
     }
 
 def p_lit2(p):
@@ -303,7 +317,8 @@ def p_lit2(p):
     '''
     p[0] = {
         "name": "lit",
-        "value": p[1]
+        "value": p[1],
+        "exptype": "int"
     }
 
 def p_true(p):
@@ -385,7 +400,59 @@ def p_vdecl(p):
 #     result = parser.parse(content, debug=True)
 #     print(yaml.dump(result))
 
+
+def check_violation(node):
+    # print(result)
+    if type(node) is dict:
+        logicOps = ["eq", "gt", "lt", "and", "or"]
+        arithOps = ["add", "sub",  "mul", "div"]
+        if "op" in node:
+            if node["op"] in logicOps:
+                node["exptype"] = "bool"
+            elif node["op"] in arithOps:
+                node["exptype"] = "lhs" # node["lhs"]["exptype"]
+
+        if "node" in node:
+            if node["type"] == "void":
+                raise Exception("error: <vdecl> type cannot be void")
+            elif "ref void" in node["type"]:
+                raise Exception("error: ref void is not allowed")
+            elif node["type"].count("ref") > 1:
+                raise Exception("error: ref ref <type> is not allowed")
+
+            variables[node["var"]] = node["type"]
+        
+        if "name" in node:
+            if node["name"] == "varval":
+                if node["var"] not in variables:
+                    raise Exception("error: variable, {} has not been declared", node["var"])
+                node["exptype"] = variables[node["var"]]
+
+            if node["name"] == "funccall":
+                if node["globid"] not in funcs_declare:
+                    raise Exception("error: functions should be declared before used")
+                node["exptype"] = funcs_declare[node["globid"]].return_type
+
+            elif node["name"] == "func":
+                if node["globid"] == "run":
+                    if "run" in funcs_declare:
+                        raise Exception("error: run should only declare once")
+                    elif node['ret_type'] != "int":
+                        raise Exception("error: run should only return int type")
+                    elif "vdecls" in node:
+                        raise Exception("error: run should take no arguments")
+                else:
+                    if "ref" in node['ret_type']:
+                        raise Exception("error: function cannot return ref type")
+                funcs_declare[node["globid"]] = Func(node["globid"], 0, node['ret_type'])
+        for k, v in node.items():
+            check_violation(v)
+    elif type(node) is list:
+        for v in node:
+            check_violation(v)
+
 def parse(input_content):
     parser = yacc.yacc()
     result = parser.parse(input_content)
+    check_violation(result)
     return yaml.dump(result)
